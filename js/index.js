@@ -83,10 +83,63 @@ const peeps = [
     favoriteNumbers: [1, 4, 8, 12, 32, 64, 128],
   },
 ];
+console.table(peeps);
 
 // 1) Add a boolean property "isAwesome" for each peep and set it to "true" if the person has at least 3 favorite numbers (or false if not)...
 peeps.forEach((p) => (p.isAwesome = p.favoriteNumbers.length >= 3));
 
 // 2) Return a new array called "youngPeeps" with peeps 25 or younger...
-const youngPeeps = peeps.age <= 25;
-console.log("peeps", peeps);
+const youngPeeps = peeps.filter((p) => p.age < 25);
+
+// 3) Sort the "favoriteNumbers" property from least to greatest for each peep in the peeps array...
+peeps.forEach((p) => {
+  p.favoriteNumbers.sort((a, b) => a - b);
+});
+peeps.forEach((p) => console.log(p.favoriteNumbers));
+
+// 4) Return "true" if every person has an age below 50 and "false" if not...
+const allUnder50 = peeps.every((p) => p.age < 50);
+console.log("allUnder50", allUnder50);
+
+// 5) Create a function called "findPeep" that returns the peep for an ID passed in and returns "not found" if the peep does not exist. Call it for an ID that EXISTS and one that does NOT...
+function findPeep(id) {
+  const peepFound = peeps.find((p) => p.id === id);
+  return peepFound ? peepFound : "Not found";
+}
+console.log(findPeep(1));
+
+// 6) Create a new array called "reversedPeeps" with the peeps array order reversed...
+const reversedPeeps1 = [...peeps.reverse()]; // NOTE: This method mutates the original array AS WELL!
+const reversedPeeps2 = [...peeps].reverse(); // This method DOES NOT
+console.table(reversedPeeps1, reversedPeeps2);
+
+// 7) Add an additional property on each peep object called favoriteNumbersSum with a single number value which equals the total of all of their favorite numbers...
+peeps.forEach((p) => {
+  p.favoriteNumbersSum = p.favoriteNumbers.reduce((a, b) => a + b);
+});
+
+// 8) Create a new array called "numberOnePeeps" with all people that include a favorite  number of "1". Include only their "names" and "ids" in the new array...
+const numberOnePeeps = peeps
+  .filter((p) => p.favoriteNumbers.includes(1))
+  .map((item) => {
+    return {
+      id: item.id,
+      name: item.name,
+    };
+  });
+console.log("numberOnePeeps", numberOnePeeps);
+
+// 9) Combine all peeps from the numberOnePeeps (#8 above) which are also in the youngPeeps (#2 above) array into a new array called "freshPeeps". Include peeps with unique "ids" only from youngPeeps array...
+const freshPeeps = [...numberOnePeeps];
+youngPeeps.forEach((p) => {
+  if (!freshPeeps.find((fp) => fp.id === p.id)) {
+    freshPeeps.push(p);
+  }
+});
+console.table("freshPeeps", freshPeeps);
+
+// 10) Return a single value representing the total of all "favoriteNumbers" for anyone with the "isAwesome" property set to "true" (HINT: Should be equal to 484)...
+const totalOfAllFavoriteNumbers = peeps
+  .filter((p) => p.isAwesome)
+  .reduce((a, b) => a + b.favoriteNumbersSum, 0);
+console.log("totalOfAllFavoriteNumbers", totalOfAllFavoriteNumbers);
