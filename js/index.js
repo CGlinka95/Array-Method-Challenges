@@ -85,4 +85,8 @@ const peeps = [
 ];
 
 // 1) Add a boolean property "isAwesome" for each peep and set it to "true" if the person has at least 3 favorite numbers (or false if not)...
+peeps.forEach((p) => (p.isAwesome = p.favoriteNumbers.length >= 3));
+
+// 2) Return a new array called "youngPeeps" with peeps 25 or younger...
+const youngPeeps = peeps.age <= 25;
 console.log("peeps", peeps);
